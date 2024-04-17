@@ -58,25 +58,24 @@ public class WarehouseService implements WarehouseInterface {
     @Override
     public boolean moveMaterial(WarehousesManager warehousesManager, Warehouse warehouseFrom, Warehouse warehouseTo, Material material, int quantity) {
         if (!Validators.isExistWarehouse(warehousesManager, warehouseTo)) {
-            return false;
-        }
-
-        if (!Validators.isExistMaterial(warehouseFrom.getMaterials(), material)) {
+            System.out.println("The Warehouse " + warehouseTo.getName() + " is not exist");
             return false;
         }
 
         if (!Validators.isExistQuantity(warehouseFrom.getMaterials(), material, quantity)) {
+            System.out.println("You does not have that quantity of material");
             return false;
         }
         ;
 
         int findIndexOfWarehouse = warehousesManager.getWarehouses().indexOf(warehouseTo);
+
         Warehouse warehouse = warehousesManager.getWarehouses().get(findIndexOfWarehouse);
 
         if (!Validators.isExistMaterial(warehouse.getMaterials(), material)) {
             addMaterial(warehouse.getMaterials(), material, 0);
         }
-
+        Material material1 = null;
         int maxCapacity = -1;
         int existCount = -1;
 
@@ -86,14 +85,16 @@ public class WarehouseService implements WarehouseInterface {
             if (m.getName().name().equals(material.getName().name())) {
                 maxCapacity = (int) m.getMaxCapacity();
                 existCount = count;
+                material1=m;
             }
         }
 
-        if ((maxCapacity-existCount) < quantity) {
+        if (!Validators.isRightQuantity(material1,quantity)||(quantity>maxCapacity-existCount )) {
+            System.out.println("The quantity is too big");
             return false;
         }
 
-        addQuantity(warehouseTo.getMaterials(),material,quantity);
+        addQuantity(warehouse.getMaterials(),material,quantity);
         reduceQuantity(warehouseFrom.getMaterials(),material,quantity);
 
         return true;
@@ -101,7 +102,7 @@ public class WarehouseService implements WarehouseInterface {
 
     private void addQuantity(Map<Material, Integer> materials, Material material, int addQuantity) {
         int existQuantity = materials.get(material);
-        materials.put(material,existQuantity+existQuantity);
+        materials.put(material,existQuantity+addQuantity);
     }
 
 
@@ -109,27 +110,5 @@ public class WarehouseService implements WarehouseInterface {
         int existQuantity = materials.get(material);
         materials.put(material,existQuantity-reduceQuantity);
     }
-
-
-//    @Override
-//    public boolean moveMaterial(WarehousesManager warehousesManager,Warehouse warehouseFrom, Warehouse warehouseTo, Material material, int quantity) {
-//        if (!Validators.isExistWarehouse(warehousesManager, warehouseTo)) {
-//            System.out.println("The Warehouse " + warehouseTo.getName() + " is not found");
-//            return false;
-//        } else if (!Validators.isValidQuantityForAccepting(warehousesManager, warehouseTo, material, quantity)) {
-//            System.out.println("The Warehouse can not accept that quantity of material");
-//            return false;
-//        }else {
-//            int indexOfWarehouseTo = warehousesManager.getWarehouses().indexOf(warehouseTo);
-//            int indexOfWarehouseFrom = warehousesManager.getWarehouses().indexOf(warehouseFrom);
-//            Warehouse warehouseToMove = warehousesManager.getWarehouses().get(indexOfWarehouseTo);
-//            Warehouse warehouseFromMove = warehousesManager.getWarehouses().get(indexOfWarehouseFrom);
-//            int materialCountOfTo = warehousesManager.getWarehouses().get(indexOfWarehouseTo).getMaterials().get(material);
-//            int materialCountOfFrom = warehousesManager.getWarehouses().get(indexOfWarehouseFrom).getMaterials().get(material);
-//            addMaterial(warehouseToMove.getMaterials(),material,materialCountOfTo+quantity);
-//            addMaterial(warehouseFromMove.getMaterials(),material,materialCountOfFrom-quantity);
-//            return true;
-//        }
-//    }
 
 }

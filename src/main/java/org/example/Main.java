@@ -36,6 +36,7 @@ public class Main {
 //        warehouseController.addMaterial(warehouse.getMaterials(), material4,88);
 
         warehouseController.addMaterial(warehouse1.getMaterials(), material2, 40);
+        warehouseController.addMaterial(warehouse1.getMaterials(), material1, 12);
 
         //
         System.out.println(warehouseController.getMaterialQuantity(warehouse.getMaterials(), material1));
@@ -48,7 +49,7 @@ public class Main {
         System.out.println("---------------------------");
         System.out.println("---------------------------");
         //move
-        warehouseController.moveMaterial(warehousesManager, warehouse, warehouse1, material1, 100);
+        warehouseController.moveMaterial(warehousesManager, warehouse, warehouse1, material1, -12);
 
         warehouseController.getWarehouseMaterials(warehouse1.getMaterials());
         System.out.println("---------------------------");
