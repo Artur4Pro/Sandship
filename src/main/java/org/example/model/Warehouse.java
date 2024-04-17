@@ -1,17 +1,16 @@
 package org.example.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Warehouse {
-
+    private static int id ;
     private String name;
-    private final Map <Material , Integer> materials;
+    private final Map<Material, Integer> materials;
 
     public Warehouse(String name) {
         this.name = name;
         this.materials = new HashMap<>();
+        id++;
     }
 
     public String getName() {
@@ -28,7 +27,7 @@ public class Warehouse {
 
     @Override
     public String toString() {
-        return "Warehouse " + name ;
+        return "Warehouse " + name;
     }
 
     @Override

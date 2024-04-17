@@ -1,6 +1,8 @@
 package org.example.controller;
 
 import org.example.model.Material;
+import org.example.model.Warehouse;
+import org.example.model.WarehousesManager;
 import org.example.service.WarehouseService;
 
 import java.util.Map;
@@ -22,6 +24,10 @@ public class WarehouseController {
 
     public void getWarehouseMaterials(Map<Material, Integer> materials) {
         warehouseService.getWarehouseMaterials(materials);
+    }
+
+    public void moveMaterial(WarehousesManager warehousesManager, Warehouse warehouseFrom, Warehouse warehouseTo, Material material, int quantity) {
+        warehouseService.moveMaterial(warehousesManager, warehouseFrom, warehouseTo, material, quantity);
     }
 
 }
