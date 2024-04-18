@@ -28,6 +28,10 @@ public class Validators {
         return (isRightQuantity(material, quantity) && isExistQuantity(materials, material, quantity));
     }
 
+    public static  boolean isRightNumberInRange(int number, int range){
+        return (number>0 && number<=range);
+    }
+
 
 
 

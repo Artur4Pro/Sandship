@@ -3,15 +3,14 @@ package org.example.model;
 import java.util.*;
 
 public class Warehouse {
-    private static int id ;
+
     private String name;
     private final Map<Material, Integer> materials;
 
     public Warehouse(String name) {
         this.name = name;
         this.materials = new HashMap<>();
-        id++;
-    }
+        }
 
     public String getName() {
         return name;
@@ -27,7 +26,7 @@ public class Warehouse {
 
     @Override
     public String toString() {
-        return "Warehouse " + name;
+        return name;
     }
 
     @Override
@@ -35,7 +34,7 @@ public class Warehouse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Warehouse warehouse = (Warehouse) o;
-        return Objects.equals(name, warehouse.name) && Objects.equals(materials, warehouse.materials);
+        return Objects.equals(name.toLowerCase(), warehouse.name.toLowerCase()) && Objects.equals(materials, warehouse.materials);
     }
 
     @Override

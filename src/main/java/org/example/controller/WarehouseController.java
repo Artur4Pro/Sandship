@@ -5,29 +5,22 @@ import org.example.model.Warehouse;
 import org.example.model.WarehousesManager;
 import org.example.service.WarehouseService;
 
+import java.util.List;
 import java.util.Map;
 
 public class WarehouseController {
     private final WarehouseService warehouseService = new WarehouseService();
 
-    public void addMaterial(Map<Material, Integer> materials, Material material, int quantity) {
-        warehouseService.addMaterial(materials, material, quantity);
+    public void addWarehouse(WarehousesManager warehousesManager, Warehouse warehouse) {
+        warehouseService.addWarehouse(warehousesManager, warehouse);
     }
 
-    public void removeMaterial(Map<Material, Integer> materials, Material material) {
-        warehouseService.removeMaterial(materials, material);
+    public void showWarehousesList(WarehousesManager warehousesManager) {
+        warehouseService.showWarehousesList(warehousesManager);
     }
 
-    public int getMaterialQuantity(Map<Material, Integer> materials, Material material) {
-        return warehouseService.getMaterialQuantity(materials, material);
-    }
-
-    public void getWarehouseMaterials(Map<Material, Integer> materials) {
-        warehouseService.getWarehouseMaterials(materials);
-    }
-
-    public void moveMaterial(WarehousesManager warehousesManager, Warehouse warehouseFrom, Warehouse warehouseTo, Material material, int quantity) {
-        warehouseService.moveMaterial(warehousesManager, warehouseFrom, warehouseTo, material, quantity);
+    public Warehouse getWarehouse(WarehousesManager warehousesManager, int index) {
+        return warehouseService.getWarehouse(warehousesManager, index);
     }
 
 }

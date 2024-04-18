@@ -1,18 +1,26 @@
 package org.example.model;
 
+import javax.annotation.processing.Generated;
 import java.util.Objects;
 
 public class Material {
+    private static int idCounter=1;
+    private int id;
     private MaterialType name;
     private String description;
     private String icon;
     private int maxCapacity;
 
     public Material(MaterialType name, String description, String icon, int maxCapacity) {
+        this.id = idCounter++;
         this.name = name;
         this.description = description;
         this.icon = icon;
         this.maxCapacity = maxCapacity;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public MaterialType getName() {
@@ -49,11 +57,7 @@ public class Material {
 
     @Override
     public String toString() {
-        return "Material "+ name +
-                ", description='" + description + '\'' +
-                ", icon='" + icon + '\'' +
-                ", maxCapacity=" + maxCapacity +
-                '}';
+        return name + "    |   " + description + "    |   " + icon + "    |   ";
     }
 
     @Override
@@ -61,11 +65,11 @@ public class Material {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Material material = (Material) o;
-        return maxCapacity == material.maxCapacity && name == material.name && Objects.equals(description, material.description) && Objects.equals(icon, material.icon);
+        return  (name == material.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, icon, maxCapacity);
+        return Objects.hash(name);
     }
 }
