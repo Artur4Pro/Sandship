@@ -15,4 +15,5 @@ public interface MaterialInterface {
     public void getWarehouseMaterials(Warehouse warehouse);
     public boolean moveMaterial(WarehousesManager warehousesManager , Warehouse warehouseFrom, Warehouse warehouseTo , Material material , int quantity);
     public void addQuantity(Warehouse warehouse, Material material, int addQuantity);
+    public Material getMaterialByType(Warehouse warehouse,MaterialType materialType);
 }

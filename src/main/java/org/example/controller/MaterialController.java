@@ -36,4 +36,7 @@ public class MaterialController {
     public void addQuantity(Warehouse warehouse, Material material, int addQuantity){
         materialService.addQuantity(warehouse,material,addQuantity);
     }
+    public Material getMaterialByType(Warehouse warehouse,MaterialType materialType) {
+        return materialService.getMaterialByType(warehouse, materialType);
+    }
 }

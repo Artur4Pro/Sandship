@@ -4,24 +4,18 @@ import javax.annotation.processing.Generated;
 import java.util.Objects;
 
 public class Material {
-    private static int idCounter=1;
-    private int id;
     private MaterialType name;
     private String description;
     private String icon;
     private int maxCapacity;
 
     public Material(MaterialType name, String description, String icon, int maxCapacity) {
-        this.id = idCounter++;
         this.name = name;
         this.description = description;
         this.icon = icon;
         this.maxCapacity = maxCapacity;
     }
 
-    public int getId() {
-        return id;
-    }
 
     public MaterialType getName() {
         return name;

@@ -15,8 +15,10 @@ public interface ApplicationInterface {
     public Material newMaterial();
     public Warehouse newWarehouse();
 
-    public int selectNumber();
+    public int enterNumber();
     public void printName(String name);
     public void warehouseMenu();
     public void start();
+
+
 }

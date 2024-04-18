@@ -9,13 +9,12 @@ import org.example.model.WarehousesManager;
 import org.example.utility.ApplicationInterface;
 import org.example.validators.Validators;
 
-import javax.xml.validation.Validator;
 import java.util.Scanner;
 
 public class ApplicationService implements ApplicationInterface {
-    WarehousesManager warehousesManager = WarehousesManager.INSTANCE;
-    WarehouseController warehouseController = new WarehouseController();
-    MaterialController materialController = new MaterialController();
+    private final WarehousesManager warehousesManager = WarehousesManager.INSTANCE;
+    private final WarehouseController warehouseController = new WarehouseController();
+    private final MaterialController materialController = new MaterialController();
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
@@ -39,13 +38,22 @@ public class ApplicationService implements ApplicationInterface {
     @Override
     public int addMaxQuantity() {
         System.out.println("Write the max quantity of Material");
+        while (!scanner.hasNextInt()) {
+            System.out.println("The entered is not number try again");
+            scanner.next();
+        }
         return scanner.nextInt();
     }
 
     @Override
     public int quantity(Material material) {
         System.out.println("Select the quantity of material");
-        int quantity = scanner.nextInt();;
+        while (!scanner.hasNextInt()) {
+            System.out.println("The entered is not number try again");
+            scanner.next();
+        }
+        int quantity = scanner.nextInt();
+
         while (!Validators.isRightQuantity(material, quantity)) {
             System.out.println("Wrong quantity, enter around 0 to " + material.getMaxCapacity());
             quantity = scanner.nextInt();
@@ -59,8 +67,12 @@ public class ApplicationService implements ApplicationInterface {
     }
 
     @Override
-    public int selectNumber() {
+    public int enterNumber() {
         System.out.println("Select the number");
+        while (!scanner.hasNextInt()) {
+            System.out.println("The entered is not number try again");
+            scanner.next();
+        }
         return scanner.nextInt();
     }
 
@@ -76,9 +88,9 @@ public class ApplicationService implements ApplicationInterface {
 
     @Override
     public MaterialType materialType() {
-        System.out.println("Chose the materialType");
         MaterialType.printTypes();
-        int x = scanner.nextInt();
+        System.out.print("For chose the material Type ");
+        int x = enterNumber();
         if (x < 0 || x > MaterialType.materialTypeCount()) {
             System.out.println("You chose wrong number of material please chose again");
             return materialType();
@@ -121,49 +133,71 @@ public class ApplicationService implements ApplicationInterface {
 
     @Override
     public void warehouseMenu() {
-        if (warehousesManager.getWarehouses().isEmpty()) {
-            start();
-        }
-        int size = warehousesManager.getWarehouses().size();
-
-        warehouseController.showWarehousesList(warehousesManager);
-
-        int selectedNumber = selectNumber();
-
-        while (!Validators.isRightNumberInRange(selectedNumber, size)) {
-            System.out.println("Wrong input number, try Again ");
-            selectedNumber = selectNumber();
-        }
-        Warehouse warehouse = warehouseController.getWarehouse(warehousesManager, selectedNumber - 1);
-        materialController.getWarehouseMaterials(warehouse);
-        System.out.println("""
-                1. Add Material 🔨
-                2. Remove Material ✖️
-                3. Move Material 🚚
-                4. Back to last menu 🚚""");
-
-        switch (scanner.nextInt()) {
-            case 1: {
-                Material material = newMaterial();
-                int quantity = quantity(material);
-                boolean isAdded = materialController.addMaterial(warehouse, material, quantity);
-                if (isAdded) {
-                    materialController.addQuantity(warehouse,material,quantity);
-                }
-            }
-            case 2:{}
-            case 3:{}
-            case 4:{}
+        boolean on = true;
+        while (on) {
+            if (warehousesManager.getWarehouses().isEmpty()) {
                 start();
-            default: {
-                System.out.printf("Wrong input please try again! \n");
-                warehouseMenu();
             }
+            int size = warehousesManager.getWarehouses().size();
 
+            warehouseController.showWarehousesList(warehousesManager);
+
+            int selectedNumber = enterNumber();
+
+            while (!Validators.isRightNumberInRange(selectedNumber, size)) {
+                System.out.println("Wrong input number, try Again ");
+                selectedNumber = enterNumber();
+            }
+            Warehouse warehouse = warehouseController.getWarehouse(warehousesManager, selectedNumber - 1);
+            materialController.getWarehouseMaterials(warehouse);
+            System.out.println("""
+                    1. Add Material 🔨
+                    2. Remove Material ✖️
+                    3. Move Material 🚚
+                    4. Back to last menu 🚚""");
+
+            switch (scanner.next()) {
+                case "1": {
+                    Material material = newMaterial();
+                    int quantity = quantity(material);
+                    boolean isAdded = materialController.addMaterial(warehouse, material, quantity);
+                    if (isAdded) {
+                        materialController.addQuantity(warehouse, material, quantity);
+                    }
+                    break;
+                }
+                case "2": {
+                    if (warehouse.getMaterials().isEmpty()) {
+                        System.out.println("Warehouse is empty");
+                        break;
+                    }
+                    System.out.println("For deleting chose the type ");
+                    MaterialType materialType = materialType();
+                    Material material = materialController.getMaterialByType(warehouse, materialType);
+                    if (material == null) {
+                        System.out.println("That material is not exist in Warehouse");
+                        break;
+                    }
+                    materialController.removeMaterial(warehouse, material);
+                    break;
+                }
+                case "3": {
+
+                }
+                case "4": {
+                    start();
+                    on = false;
+                    break;
+                }
+                default: {
+                    System.err.println("Wrong input please try again! \n");
+                    warehouseMenu();
+                }
+
+            }
+            warehouseMenu();
         }
     }
-
 }
-
 
 

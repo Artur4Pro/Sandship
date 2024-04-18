@@ -12,11 +12,13 @@ public class Validators {
         return (quantity >= 0 && quantity <= material.getMaxCapacity());
     }
 
-    public static boolean isExistQuantity(Map<Material, Integer> materials, Material material, int quantity) {
+    public static boolean isExistQuantity(Warehouse warehouse, Material material, int quantity) {
+        Map<Material, Integer> materials = warehouse.getMaterials();
         return materials.get(material) >= quantity;
     }
 
-    public static boolean isExistMaterial(Map<Material, Integer> materials, Material material) {
+    public static boolean isExistMaterial(Warehouse warehouse, Material material) {
+        Map<Material, Integer> materials = warehouse.getMaterials();
         return materials.containsKey(material);
     }
 
@@ -24,8 +26,8 @@ public class Validators {
         return warehousesManager.getWarehouses().contains(warehouse);
     }
 
-    public static boolean isValidQuantityForMoving(Map<Material, Integer> materials, Material material, int quantity) {
-        return (isRightQuantity(material, quantity) && isExistQuantity(materials, material, quantity));
+    public static boolean isValidQuantityForMoving(Warehouse warehouse, Material material, int quantity) {
+        return (isRightQuantity(material, quantity) && isExistQuantity(warehouse, material, quantity));
     }
 
     public static  boolean isRightNumberInRange(int number, int range){
