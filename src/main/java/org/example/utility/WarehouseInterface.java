@@ -12,6 +12,7 @@ public interface WarehouseInterface {
     public void addWarehouse(WarehousesManager warehousesManager, Warehouse warehouse);
 
     public void showWarehousesList(WarehousesManager warehousesManager);
+    public void showWarehousesListWithoutSelectedWarehouse(WarehousesManager warehousesManager,Warehouse warehouse);
 
     public Warehouse getWarehouse(WarehousesManager warehousesManager, int index);
 

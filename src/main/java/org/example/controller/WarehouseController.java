@@ -23,4 +23,8 @@ public class WarehouseController {
         return warehouseService.getWarehouse(warehousesManager, index);
     }
 
+    public void showWarehousesListWithoutSelectedWarehouse(WarehousesManager warehousesManager, Warehouse warehouse) {
+        warehouseService.showWarehousesListWithoutSelectedWarehouse(warehousesManager,warehouse);
+    }
+
 }

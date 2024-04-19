@@ -33,40 +33,4 @@ public class Validators {
     public static  boolean isRightNumberInRange(int number, int range){
         return (number>0 && number<=range);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //   public static boolean isValidQuantityForAccepting(WarehousesManager warehousesManager, Warehouse warehouse, Material material, int quantity) {
-//        int maxQuantityAccepting = -1;
-//        if (isExistWarehouse(warehousesManager, warehouse)) {
-//            int indexOfWarehouse = warehousesManager.getWarehouses().indexOf(warehouse);
-//            if (!isExistMaterial(warehousesManager.getWarehouses().get(indexOfWarehouse).getMaterials(), material)) {
-//
-//                Warehouse warehouseToMove = warehousesManager.getWarehouses().get(indexOfWarehouse);
-//                int existMaterialQuantity = warehouseToMove.getMaterials().get(material);
-//                int maxCapacityOfExistMaterial = -1;
-//                for (Map.Entry<Material, Integer> entry : warehouseToMove.getMaterials().entrySet()) {
-//                    Material findMaterial = entry.getKey();
-//                    if (findMaterial.getName().name().equals(material.getName().name())) {
-//                        maxCapacityOfExistMaterial = (int) findMaterial.getMaxCapacity();
-//                    }
-//                    maxQuantityAccepting = maxCapacityOfExistMaterial - existMaterialQuantity;
-//                }
-//            }
-//        }
-//        return maxQuantityAccepting >= quantity;
-//
-//    }
 }

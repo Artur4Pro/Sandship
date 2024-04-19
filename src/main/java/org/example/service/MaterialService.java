@@ -19,14 +19,14 @@ public class MaterialService implements MaterialInterface {
     public boolean addMaterial(Warehouse warehouse, Material material, int quantity) {
         Map<Material, Integer> materials = warehouse.getMaterials();
         if (Validators.isExistMaterial(warehouse, material)) {
-            System.out.println("The material " + material.getName().name() + " has already existed in this Warehouse");
+            System.out.println("The material " + material.getName().name() + " has already existed in this Warehouse ");
             return false;
         } else if (!Validators.isRightQuantity(material, quantity)) {
-            System.out.println("The quantity must be in rang from 0 to " + material.getMaxCapacity() + ". Enter right number");
+            System.out.println("The quantity must be in rang from 0 to " + material.getMaxCapacity() + ". Enter right number ");
             return false;
         } else {
             materials.put(material, quantity);
-            System.out.println("The material is added");
+            System.out.println("The material is added ");
             return true;
         }
     }
@@ -36,10 +36,10 @@ public class MaterialService implements MaterialInterface {
         Map<Material, Integer> materials = warehouse.getMaterials();
         if (Validators.isExistMaterial(warehouse, material)) {
             materials.remove(material);
-            System.out.println("The material " + material.getName() + " is removed");
+            System.out.println("The material " + material.getName() + " is removed ");
             return true;
         } else {
-            System.out.println("The material " + material.getName() + "is not exist in the Warehouse");
+            System.out.println("The material " + material.getName() + "is not exist in the Warehouse ");
             return false;
         }
     }
@@ -50,7 +50,7 @@ public class MaterialService implements MaterialInterface {
         if (Validators.isExistMaterial(warehouse, material)) {
             return materials.get(material);
         } else {
-            System.out.println("The material " + material.getName() + "is not exist in the Warehouse");
+            System.out.println(" The material " + material.getName() + "is not exist in the Warehouse ");
             return -1000;
         }
     }
@@ -59,7 +59,7 @@ public class MaterialService implements MaterialInterface {
     public void getWarehouseMaterials(Warehouse warehouse) {
         Map<Material, Integer> materials = warehouse.getMaterials();
         if (materials.isEmpty()) {
-            System.out.println("This Warehouse is empty");
+            System.out.println("\nThis Warehouse is empty\n");
         } else {
             System.out.println("__________________________");
             for (Map.Entry<Material, Integer> entry : materials.entrySet()) {
@@ -74,12 +74,12 @@ public class MaterialService implements MaterialInterface {
     @Override
     public boolean moveMaterial(WarehousesManager warehousesManager, Warehouse warehouseFrom, Warehouse warehouseTo, Material material, int quantity) {
         if (!Validators.isExistWarehouse(warehousesManager, warehouseTo)) {
-            System.out.println("The Warehouse " + warehouseTo.getName() + " is not exist");
+            System.out.println("The Warehouse " + warehouseTo.getName() + " is not exist ");
             return false;
         }
 
         if (!Validators.isExistQuantity(warehouseFrom, material, quantity)) {
-            System.out.println("You does not have that quantity of material");
+            System.out.println("You does not have that quantity of material ");
             return false;
         }
         ;
@@ -106,7 +106,7 @@ public class MaterialService implements MaterialInterface {
         }
 
         if (!Validators.isRightQuantity(material1, quantity) || (quantity > maxCapacity - existCount)) {
-            System.out.println("The quantity is too big");
+            System.out.println("The quantity is too big ");
             return false;
         }
 

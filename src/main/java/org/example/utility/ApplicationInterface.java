@@ -17,8 +17,11 @@ public interface ApplicationInterface {
 
     public int enterNumber();
     public void printName(String name);
+    public void startPage();
+    public void warehousePage();
+    public void startMenu();
     public void warehouseMenu();
-    public void start();
-
+    public void greeting();
+    public void goodBy();
 
 }
