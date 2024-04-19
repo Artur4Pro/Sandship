@@ -12,7 +12,7 @@ import java.util.Map;
 public class MaterialService implements MaterialInterface {
     @Override
     public Material newMaterial(MaterialType materialType, String description, String icon, int maxCapacity) {
-        return newMaterial(materialType, description, icon, maxCapacity);
+        return new Material(materialType, description, icon, maxCapacity);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class MaterialService implements MaterialInterface {
             System.out.println("The material " + material.getName().name() + " has already existed in this Warehouse ");
             return false;
         } else if (!Validators.isRightQuantity(material, quantity)) {
-            System.out.println("The quantity must be in rang from 0 to " + material.getMaxCapacity() + ". Enter right number ");
+            System.out.println("The quantity must be in rang from 0 to " + material.getMaxCapacity() + ". Enter the right number ");
             return false;
         } else {
             materials.put(material, quantity);
@@ -56,7 +56,7 @@ public class MaterialService implements MaterialInterface {
     }
 
     @Override
-    public void getWarehouseMaterials(Warehouse warehouse) {
+    public void showWarehouseMaterials(Warehouse warehouse) {
         Map<Material, Integer> materials = warehouse.getMaterials();
         if (materials.isEmpty()) {
             System.out.println("\nThis Warehouse is empty\n");
@@ -110,7 +110,7 @@ public class MaterialService implements MaterialInterface {
             return false;
         }
 
-        addQuantity(warehouse, material, quantity);
+        increaseQuantity(warehouse, material, quantity);
         reduceQuantity(warehouseFrom, material, quantity);
 
         return true;
@@ -118,7 +118,7 @@ public class MaterialService implements MaterialInterface {
 
 
     @Override
-    public void addQuantity(Warehouse warehouse, Material material, int addQuantity) {
+    public void increaseQuantity(Warehouse warehouse, Material material, int addQuantity) {
         Map<Material, Integer> materials = warehouse.getMaterials();
         int existQuantity = materials.get(material);
         materials.put(material, existQuantity + addQuantity);
@@ -139,6 +139,13 @@ public class MaterialService implements MaterialInterface {
     }
 
 
+    /**
+     * Reduces the quantity of the specified material in the warehouse by the given amount.
+     *
+     * @param warehouse     The warehouse to reduce the quantity in.
+     * @param material      The material to reduce the quantity of.
+     * @param reduceQuantity The quantity to reduce.
+     */
     private void reduceQuantity(Warehouse warehouse, Material material, int reduceQuantity) {
         Map<Material, Integer> materials = warehouse.getMaterials();
         int existQuantity = materials.get(material);

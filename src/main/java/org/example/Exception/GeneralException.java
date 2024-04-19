@@ -1,4 +1,4 @@
-package org.example.Exaption;
+package org.example.Exception;
 
 public class GeneralException extends RuntimeException {
     public GeneralException(String message) {

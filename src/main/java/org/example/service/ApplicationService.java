@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.Exception.GeneralException;
 import org.example.controller.MaterialController;
 import org.example.controller.WarehouseController;
 import org.example.model.Material;
@@ -38,42 +39,47 @@ public class ApplicationService implements ApplicationInterface {
     @Override
     public int addMaxQuantity() {
         System.out.println("Write the max quantity of Material ");
-        while (!scanner.hasNextInt()) {
-            System.out.println("The entered is not number try again ");
-            scanner.next();
+        while (true) {
+            try {
+                int quantity = Integer.parseInt(scanner.nextLine());
+                if (quantity > 0) {
+                    return quantity;
+                } else {
+                    System.out.println("Please enter a number greater than 0.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("The entered value is not a valid number. Please try again.");
+            }
         }
-        return scanner.nextInt();
     }
 
     @Override
     public int quantity(Material material) {
         System.out.println("Select the quantity of material ");
-        while (!scanner.hasNextInt()) {
-            System.out.println("The entered is not number try again ");
-            scanner.next();
+        while (true) {
+            try {
+                int quantity = Integer.parseInt(scanner.nextLine());
+                if (Validators.isRightQuantity(material, quantity)) {
+                    return quantity;
+                } else {
+                    System.out.println("Wrong quantity, enter a value between 0 and " + material.getMaxCapacity());
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("The entered value is not a number. Please try again.");
+            }
         }
-        int quantity = scanner.nextInt();
-
-        while (!Validators.isRightQuantity(material, quantity)) {
-            System.out.println("Wrong quantity, enter around 0 to " + material.getMaxCapacity());
-            return quantity(material);
-        }
-        return quantity;
-    }
-
-    @Override
-    public void printName(String name) {
-        System.out.println(name);
     }
 
     @Override
     public int enterNumber() {
         System.out.println("Select the number ");
-        while (!scanner.hasNextInt()) {
-            System.out.println("The entered is not number try again ");
-            scanner.next();
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("The entered value is not a number. Please try again.");
+            }
         }
-        return scanner.nextInt();
     }
 
     @Override
@@ -89,18 +95,24 @@ public class ApplicationService implements ApplicationInterface {
     @Override
     public MaterialType materialType() {
         MaterialType.printTypes();
-        System.out.print("For chose the material Type ");
-        int x = enterNumber();
-        if (x < 0 || x > MaterialType.materialTypeCount()) {
-            System.out.println("You chose wrong number of material please chose again ");
-            return materialType();
+        System.out.print("For choose the material Type: ");
+        while (true) {
+            try {
+                int x = enterNumber();
+                if (x <= 0 || x > MaterialType.materialTypeCount()) {
+                    throw new GeneralException("Invalid material type number. Please choose again.");
+                }
+                return MaterialType.getType(x);
+            } catch (GeneralException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
         }
-        return MaterialType.getType(x);
     }
 
     @Override
     public void startPage() {
-        //Record.readRecord(contactsList);
         boolean on = true;
         while (on) {
             warehouseController.showWarehousesList(warehousesManager);
@@ -113,9 +125,7 @@ public class ApplicationService implements ApplicationInterface {
                 case "1" -> warehouseController.addWarehouse(warehousesManager, newWarehouse());
                 case "2" -> warehousePage();
                 case "3" -> {
-                    //Record.writeRecord(contactsList);
                     scanner.close();
-                    //contactsList.exit();
                     goodBy();
                     on = false;
                     System.exit(0);
@@ -126,9 +136,6 @@ public class ApplicationService implements ApplicationInterface {
             }
         }
     }
-
-
-
 
 
     @Override
@@ -151,77 +158,81 @@ public class ApplicationService implements ApplicationInterface {
             Warehouse warehouse = warehouseController.getWarehouse(warehousesManager, selectedNumber - 1);
             materialController.getWarehouseMaterials(warehouse);
 
-            warehouseMenu();
 
-            switch (scanner.next()) {
-                case "1": {
-                    Material material = newMaterial();
-                    int quantity = quantity(material);
-                    materialController.addMaterial(warehouse, material, quantity);
-                    break;
-                }
-                case "2": {
-                    if (warehouse.getMaterials().isEmpty()) {
-                        System.out.println("Warehouse is empty");
+            boolean inputValid = false;
+            while (!inputValid) {
+                warehouseMenu();
+                switch (scanner.next()) {
+                    case "1": {
+                        Material material = newMaterial();
+                        int quantity = quantity(material);
+                        materialController.addMaterial(warehouse, material, quantity);
+                        inputValid = true;
                         break;
                     }
-                    System.out.println("For deleting chose the type ");
-                    MaterialType materialType = materialType();
-                    Material material = materialController.getMaterialByType(warehouse, materialType);
-                    if (material == null) {
-                        System.out.println("That material is not exist in Warehouse");
+                    case "2": {
+                        if (warehouse.getMaterials().isEmpty()) {
+                            System.out.println("Warehouse is empty");
+                            break;
+                        }
+                        System.out.println("For deleting chose the type ");
+                        MaterialType materialType = materialType();
+                        Material material = materialController.getMaterialByType(warehouse, materialType);
+                        if (material == null) {
+                            System.out.println("That material is not exist in Warehouse");
+                            break;
+                        }
+                        materialController.removeMaterial(warehouse, material);
+                        inputValid = true;
                         break;
                     }
-                    materialController.removeMaterial(warehouse, material);
-                    break;
-                }
-                case "3": {
-                    if (!(warehousesManager.getWarehouses().size() > 1)) {
-                        System.out.println("You need more than 1 Warehouse for using this method ");
-                        warehousePage();
-                    }
-                    if (warehouse.getMaterials().isEmpty()) {
-                        System.out.println("Warehouse is empty");
+                    case "3": {
+                        if (!(warehousesManager.getWarehouses().size() > 1)) {
+                            System.out.println("You need more than 1 Warehouse for using this method ");
+                            warehousePage();
+                        }
+                        if (warehouse.getMaterials().isEmpty()) {
+                            System.out.println("Warehouse is empty");
+                            break;
+                        }
+
+                        warehouseController.showWarehousesListWithoutSelectedWarehouse(warehousesManager, warehouse);
+
+                        int toMoveWarehouseNumber;
+                        do {
+                            System.out.println("Enter from exist list");
+                            toMoveWarehouseNumber = enterNumber();
+                        } while (toMoveWarehouseNumber > warehousesManager.getWarehouses().size() || toMoveWarehouseNumber < 1);
+
+
+                        Warehouse warehouseTo = warehouseController.getWarehouse(warehousesManager, toMoveWarehouseNumber - 1);
+
+                        materialController.getWarehouseMaterials(warehouse);
+
+                        System.out.println("Chose the Material what you want to move");
+                        MaterialType materialType = materialType();
+
+                        Material material = materialController.getMaterialByType(warehouse, materialType);
+                        if (material == null) {
+                            System.out.println("That material is not exist in Warehouse");
+                            break;
+                        }
+
+                        System.out.print("Enter the quantity for moving , ");
+                        int quantityToMove = quantity(material);
+                        materialController.moveMaterial(warehousesManager, warehouse, warehouseTo, material, quantityToMove);
+                        inputValid = true;
                         break;
                     }
-
-                    warehouseController.showWarehousesListWithoutSelectedWarehouse(warehousesManager, warehouse);
-                    int toMoveWarehouseNumber = enterNumber();
-                    while (toMoveWarehouseNumber > warehousesManager.getWarehouses().size() || toMoveWarehouseNumber < 1) {
-                        System.out.println("Enter from exist list");
-                        toMoveWarehouseNumber = enterNumber();
-                    }
-
-                    if (warehouse.getMaterials().isEmpty()) {
-                        System.out.println("Warehouse is empty");
+                    case "4": {
+                        startPage();
+                        on = false;
                         break;
                     }
-                    Warehouse warehouseTo = warehouseController.getWarehouse(warehousesManager, toMoveWarehouseNumber - 1);
-
-                    materialController.getWarehouseMaterials(warehouse);
-
-                    System.out.println("Chose the Material what you want to move");
-                    MaterialType materialType = materialType();
-
-                    Material material = materialController.getMaterialByType(warehouse, materialType);
-                    if (material == null) {
-                        System.out.println("That material is not exist in Warehouse");
+                    default: {
+                        System.out.println("Invalid input. Please enter a valid option.");
                         break;
                     }
-
-                    System.out.print("Enter the quantity for moving , ");
-                    int quantityToMove = quantity(material);
-                    materialController.moveMaterial(warehousesManager, warehouse, warehouseTo, material, quantityToMove);
-
-                }
-                case "4": {
-                    startPage();
-                    on = false;
-                    break;
-                }
-                default: {
-                    System.out.println("Wrong input please try again! \n");
-                    warehousePage();
                 }
             }
         }
@@ -230,18 +241,18 @@ public class ApplicationService implements ApplicationInterface {
     @Override
     public void startMenu() {
         System.out.println("""
-                    1. Add warehouse 🔨
-                    2. Chose warehouse 📖
-                    3. Exit 🏁""");
+                1. Add warehouse 🔨
+                2. Chose warehouse 📖
+                3. Exit 🏁""");
     }
 
     @Override
     public void warehouseMenu() {
         System.out.println("""
-                    1. Add Material 🔨
-                    2. Remove Material ✖️
-                    3. Move Material 🚚
-                    4. Back to last menu ↩️""");
+                1. Add Material 🔨
+                2. Remove Material ✖️
+                3. Move Material 🚚
+                4. Back to last menu ↩️""");
     }
 
     @Override

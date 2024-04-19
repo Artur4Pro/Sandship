@@ -16,7 +16,6 @@ public interface ApplicationInterface {
     public Warehouse newWarehouse();
 
     public int enterNumber();
-    public void printName(String name);
     public void startPage();
     public void warehousePage();
     public void startMenu();
