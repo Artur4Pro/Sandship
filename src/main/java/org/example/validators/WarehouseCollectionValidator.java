@@ -48,10 +48,4 @@ public class WarehouseCollectionValidator {
             throw new GeneralException("The warehouse " + warehouse.getName() + " is not exist.");
         }
     }
-
-    public void validateIndex(List<Warehouse> warehouseList, int index) {
-        if (index < 0 || index >= warehouseList.size()) {
-            throw new IndexOutOfBoundsException("Index is out of bounds: " + index);
-        }
-    }
 }
