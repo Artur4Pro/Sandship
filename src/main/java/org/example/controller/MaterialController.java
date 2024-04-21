@@ -1,40 +1,27 @@
 package org.example.controller;
 
+import org.example.exception.GeneralException;
 import org.example.model.Material;
 import org.example.model.MaterialType;
-import org.example.model.Warehouse;
-import org.example.model.WarehousesManager;
-import org.example.service.MaterialService;
+import org.example.service.Impl.MaterialService;
 
 public class MaterialController {
+
     private final MaterialService materialService = new MaterialService();
 
-    public Material newMaterial(MaterialType materialType, String description, String icon, int maxCapacity) {
-        return materialService.newMaterial(materialType, description, icon, maxCapacity);
-    }
-    public boolean addMaterial(Warehouse warehouse, Material material, int quantity) {
-        return materialService.addMaterial(warehouse, material, quantity);
-    }
-
-    public boolean removeMaterial(Warehouse warehouse, Material material) {
-        return materialService.removeMaterial(warehouse, material);
-    }
-
-    public int getMaterialQuantity(Warehouse warehouse, Material material) {
-        return materialService.getMaterialQuantity(warehouse, material);
-    }
-
-    public void getWarehouseMaterials(Warehouse warehouse) {
-        materialService.showWarehouseMaterials(warehouse);
-    }
-
-    public boolean moveMaterial(WarehousesManager warehousesManager, Warehouse warehouseFrom, Warehouse warehouseTo, Material material, int quantity) {
-        return materialService.moveMaterial(warehousesManager, warehouseFrom, warehouseTo, material, quantity);
-    }
-    public void addQuantity(Warehouse warehouse, Material material, int addQuantity){
-        materialService.increaseQuantity(warehouse,material,addQuantity);
-    }
-    public Material getMaterialByType(Warehouse warehouse,MaterialType materialType) {
-        return materialService.getMaterialByType(warehouse, materialType);
+    /**
+     * Creates a new material with the provided parameters.
+     *
+     * <p>This method delegates the creation of the material to the material service.
+     * If any exception occurs during the process, such as a GeneralException, it prints the
+     * error message to the console and returns null.
+     **/
+    public Material createMaterial(MaterialType materialType, String description, String icon, int maxCapacity) {
+        try {
+            return materialService.createMaterial(materialType, description, icon, maxCapacity);
+        } catch (GeneralException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }

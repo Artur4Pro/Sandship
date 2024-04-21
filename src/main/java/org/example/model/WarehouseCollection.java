@@ -3,12 +3,13 @@ package org.example.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WarehousesManager {
+public class WarehouseCollection {
+
     private final List<Warehouse> warehouses = new ArrayList<>();
 
-    private WarehousesManager() {
+    private WarehouseCollection() {
     }
-    public static final WarehousesManager INSTANCE = new WarehousesManager();
+    public static final WarehouseCollection INSTANCE = new WarehouseCollection();
 
     public List<Warehouse> getWarehouses() {
         return warehouses;

@@ -1,9 +1,9 @@
 package org.example.model;
 
-import javax.annotation.processing.Generated;
 import java.util.Objects;
 
 public class Material {
+
     private MaterialType name;
     private String description;
     private String icon;
@@ -15,7 +15,6 @@ public class Material {
         this.icon = icon;
         this.maxCapacity = maxCapacity;
     }
-
 
     public MaterialType getName() {
         return name;
@@ -41,7 +40,7 @@ public class Material {
         this.icon = icon;
     }
 
-    public long getMaxCapacity() {
+    public int getMaxCapacity() {
         return maxCapacity;
     }
 
@@ -59,7 +58,7 @@ public class Material {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Material material = (Material) o;
-        return  (name == material.name);
+        return (name == material.name);
     }
 
     @Override
