@@ -1,8 +1,6 @@
 package org.example;
 
 
-//import org.example.controller.ApplicationController;
-
 import org.example.controller.MaterialController;
 import org.example.controller.WarehouseCollectionController;
 import org.example.controller.WarehouseController;
@@ -21,9 +19,8 @@ public class Main {
 
         WarehouseCollection warehouseCollection = WarehouseCollection.INSTANCE;
 
-        Warehouse autoParts = warehouseController.createWarehouse(null);
+        Warehouse autoParts = warehouseController.createWarehouse("autoParts");
         Warehouse motoParts = warehouseController.createWarehouse("MotoParts");
-        Warehouse someParts = warehouseController.createWarehouse("SomeParts");
         Warehouse nullWarehouse = null;
         //----------------------------------------------------------------------------
         Material iron = materialController.createMaterial(MaterialType.IRON, "Iron description", "Icon", 1600);

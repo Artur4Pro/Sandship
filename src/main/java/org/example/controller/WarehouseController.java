@@ -12,17 +12,18 @@ public class WarehouseController {
     private final WarehouseService warehouseService = new WarehouseService();
 
     /**
-     * Creates a new warehouse with the specified name.
+     * Creates a new warehouse with the given name.
+     * If the warehouse creation fails due to a GeneralException, the exception message is printed,
+     * and null is returned.
      *
-     * <p>This method delegates the creation of the warehouse to the warehouse service.
-     * If any exception occurs during the process, such as a GeneralException, it prints the
-     * error message to the console and returns null.
-     *
-     * <p>When using this method, ensure to handle potential exceptions and check for null
-     * return value.
      **/
     public Warehouse createWarehouse(String name) {
-        return warehouseService.creatWarehouse(name);
+        try {
+            return warehouseService.creatWarehouse(name);
+        }catch (GeneralException e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     /**
